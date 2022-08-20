@@ -8,5 +8,4 @@ const db = mysql.createPool({
 })
 
 //0为成功
-
 module.exports = db

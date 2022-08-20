@@ -5,6 +5,6 @@ module.exports = {
     jwtSecretKey:"wsyzxxy (*^_^*)",
     
     //token 的有效期
-    expiresIn:"3h"
+    expiresIn:"8h"
 
 }
