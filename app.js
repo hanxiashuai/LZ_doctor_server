@@ -1,6 +1,10 @@
 //导入 express
 const express = require("express");
 const path = require("path");
+
+//导入路由对象
+const router = require("./router/index")
+
 //创建服务器的实例对象
 const app = express();
 
@@ -12,8 +16,10 @@ app.use(cors());
 
 //配置解析表单数据的中间件,注意：这个中间件只能解析application/x-www-form-urlencodedd 格式的表单数据
 app.use(express.urlencoded({ extended: false }));
+
 // 通过 express.json() 这个中间件，解析表单中的 JSON 格式的数据
 app.use(express.json());
+
 //处理静态资源的中间件
 app.use(express.static(path.join(__dirname, "uploads")));
 
@@ -30,8 +36,10 @@ app.use((req, res, next) => {
   };
   next();
 });
+
 // 处理静态资源
 app.use(express.static(path.join(__dirname, "images")));
+
 //一定要在路由之前配置解析 Token 的中间件
 const config = require("./config");
 
@@ -42,36 +50,48 @@ const expressJWT = require("express-jwt");
 app.use(
   expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] })
 );
-//导入并使用用户路由模块
-const userRouter = require("./router/user");
-app.use("/api", userRouter);
-//导入并使用groups信息模块
-const groupsRouter = require("./router/groups");
-app.use("/api",groupsRouter)
-//导入并使用menu信息模块
-const menuRouter = require("./router/menu");
-app.use("/api",menuRouter)
-//导入并使用lbt信息模块
-const lbtRouter = require("./router/lbt");
-app.use("/api",lbtRouter)
-//导入并使用doctor信息模块
-const doctorRouter = require("./router/doctor");
-app.use("/api",doctorRouter)
-//导入并使用cooperation信息模块
-const cooperationRouter = require("./router/cooperation");
-app.use("/api",cooperationRouter)
-//导入并使用cooperation信息模块
-const dynamicRouter = require("./router/dynamic");
-app.use("/api",dynamicRouter)
 
-// 导入并使用用户信息路由模块
-const userinfoRouter = require("./router/userinfo");
-// 注意：以 /my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
-app.use("/my", userinfoRouter);
+//导入并使用用户路由模块
+
+app.use("/api", router.userRouter);
 
 //导入并使用微信用户路由模块
-const wxuserRouter = require("./router/wx_users");
-app.use("/api", wxuserRouter);
+
+app.use("/api", router.wxuserRouter);
+
+// 导入并使用用户信息路由模块
+
+// 注意：以 /my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
+app.use("/my",router. userinfoRouter);
+
+
+
+//导入并使用groups信息模块
+
+app.use("/api",router.groupsRouter)
+
+//导入并使用menu信息模块
+
+app.use("/api",router.menuRouter)
+
+//导入并使用lbt信息模块
+
+app.use("/api",router.lbtRouter)
+
+//导入并使用doctor信息模块
+
+app.use("/api",router.doctorRouter)
+
+//导入并使用cooperation信息模块
+
+app.use("/api",router.cooperationRouter)
+
+//导入并使用cooperation信息模块
+
+app.use("/api",router.dynamicRouter)
+
+
+
 
 
 //定义错误级别的中间件

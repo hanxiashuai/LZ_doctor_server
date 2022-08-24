@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 
 //导入全局配置的文件
 const config = require("../config");
+
 //微信登录的处理函数
 exports.wxlogin = (req, res) => {
   console.log('11111',req.query);
