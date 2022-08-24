@@ -3,18 +3,11 @@ const joi = require("@hapi/joi");
 
 //定义用户名和验证码的规则
 const username = joi.string().alphanum().min(1).max(10).required();
-const password = joi
-  .string()
-  .pattern(/^[\S]{6,15}$/)
-  .required();
+const password = joi.string().pattern(/^[\S]{6,15}$/).required();
 
-// 定义 id, nickname, emial 的验证规则
-const id = joi.number().integer().min(1).required();
+// 定义 nickname, emial 的验证规则
 const nickname = joi.string().required();
 const user_email = joi.string().email().required();
-
-//定义验证 avatar 头像的验证规则
-const avatar = joi.string().dataUri().required();
 
 //定义验证注册和登录表单数据的规则对象
 exports.reg_login_schema = {
@@ -27,7 +20,6 @@ exports.reg_login_schema = {
 // 验证规则对象 - 更新用户基本信息
 exports.update_userinfo_schema = {
   body: {
-    id,
     nickname,
     email: user_email,
   },
@@ -44,12 +36,5 @@ exports.update_password_schema = {
     // 2. joi.not(joi.ref('oldPwd')) 表示 newPwd 的值不能等于 oldPwd 的值
     // 3. .concat() 用于合并 joi.not(joi.ref('oldPwd')) 和 password 这两条验证规则
     newPwd: joi.not(joi.ref("oldPwd")).concat(password),
-  },
-};
-
-//验证规则对象 - 更新头像
-exports.update_avatar_schema = {
-  body: {
-    avatar,
   },
 };

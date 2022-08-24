@@ -8,7 +8,7 @@ const bcrypt = require("bcryptjs");
 exports.getUserInfo = (req, res) => {
   // 根据用户的 id，查询用户的基本信息
   const sql = `select id, username, nickname, email, user_pic from ev_users where id=?`;
-
+  // console.log(req.user);
   // 注意：req 对象上的 user 属性，是 Token 解析成功，express-jwt 中间件帮我们挂载上去的
   db.query(sql, req.user.id, (err, results) => {
     // 1. 执行 SQL 语句失败
@@ -32,7 +32,7 @@ exports.updateUserInfo = (req, res) => {
   const sql = "update ev_users set ? where id = ?";
 
   //调用 db.query() 执行sQl 语句并传递参数
-  db.query(sql, [req.body, req.body.id], (err, results) => {
+  db.query(sql, [req.body, req.user.id], (err, results) => {
     //执行失败
     if (err) return res.cc(err);
     //执行成功。但是 影响行数不等于1
@@ -66,10 +66,10 @@ exports.updatePassword = (req, res) => {
     const sql = "update ev_users set password=? where id=?";
 
     // 对新密码进行加密处理
-    const newPsw = bcrypt.hashSync(req.body.newPwd, 10);
+    const newPwd = bcrypt.hashSync(req.body.newPwd, 10);
 
     //调用 db.query() 执行 sql 语句
-    db.query(sql, [newPsw, req.user.id], (err, results) => {
+    db.query(sql, [newPwd, req.user.id], (err, results) => {
       //执行 SQL 失败
       if (err) return res.cc(err);
 
@@ -84,11 +84,17 @@ exports.updatePassword = (req, res) => {
 
 //更新用户头像的处理函数
 exports.updateAvatar = (req, res) => {
+  console.log("文件上传", req.file);
+
   //定义更新用户头像的 sql 语句
   const sql = "update ev_users set user_pic=? where id=?";
 
+  //拿到文件名称设置文件路径
+  const { filename } = req.file;
+  const avatarUrl = `http://127.0.0.1:3007/${filename}`;
+
   //调用 db.query() 执行sql语句，更新对应用户的头像
-  db.query(sql, [req.body.avatar, req.user.id], (err, results) => {
+  db.query(sql, [avatarUrl, req.user.id], (err, results) => {
     //执行 SQL 失败
     if (err) return res.cc(err);
 

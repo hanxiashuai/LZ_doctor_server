@@ -1,3 +1,5 @@
+const path = require("path");
+
 //导入 express
 const express = require("express");
 
@@ -12,6 +14,10 @@ app.use(cors());
 
 //配置解析表单数据的中间件,注意：这个中间件只能解析application/x-www-form-urlencodedd 格式的表单数据
 app.use(express.urlencoded({ extended: false }));
+// 通过 express.json() 这个中间件，解析表单中的 JSON 格式的数据
+app.use(express.json());
+//处理静态资源的中间件
+app.use(express.static(path.join(__dirname, "uploads")));
 
 //一定要在路由之前封装 res.cc 函数
 app.use((req, res, next) => {
@@ -47,6 +53,11 @@ const userinfoRouter = require("./router/userinfo");
 // 注意：以 /my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
 app.use("/my", userinfoRouter);
 
+//导入并使用微信用户路由模块
+const wxuserRouter = require("./router/wx_users");
+app.use("/api", wxuserRouter);
+
+
 //定义错误级别的中间件
 app.use((err, req, res, next) => {
   //验证失败导致的错误
@@ -54,10 +65,11 @@ app.use((err, req, res, next) => {
   // 捕获身份认证失败的错误
   if (err.name === "UnauthorizedError") return res.cc("身份认证失败！");
   //未知的错误
+  console.log(err);
   res.cc(err);
 });
 
 //启动服务器
 app.listen(3007, () => {
-  console.log("服务器启动成功 baseUrl: htttp://127.0.0.1:3007");
+  console.log("服务器启动成功 baseUrl: http://127.0.0.1:3007");
 });

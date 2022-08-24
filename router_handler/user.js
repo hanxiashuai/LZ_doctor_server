@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 
 //导入全局配置的文件
 const config = require("../config");
+
 //注册新用户的处理函数
 exports.regUser = (req, res) => {
   //获取用户端提交到服务器额度用户信息
@@ -24,7 +25,6 @@ exports.regUser = (req, res) => {
 
   db.query(sqlStr, userinfo.username, (err, results) => {
     //执行 SQL 语句失败
-    // if (err) return res.send({ status: 1, message: err.message });
     if (err) return res.cc(err);
 
     //判断用户名是否被占用
@@ -67,20 +67,22 @@ exports.login = (req, res) => {
 
   //执行 SQL 语句，根据用户名查询用户信息
   db.query(sql, userinfo.username, (err, results) => {
+    const menusql = "select * from `admin_menu`";
+
     //执行 SQL 失败
     if (err) return res.cc(err);
 
     //执行 SQL 成功，但是获取到的数据条数不等于1
-    if (results.length !== 1) return res.cc("登录失败");
+    if (results.length !== 1) return res.cc("用户不存在，请先注册！");
 
-    //TODO: 判断密码是否正确 对比数据库和提交的密码返回一个波尔值
+    //判断密码是否正确 对比数据库和提交的密码返回一个波尔值
     const compareResult = bcrypt.compareSync(
       userinfo.password,
       results[0].password
     );
-    if (!compareResult) return res.cc("登录失败!");
+    if (!compareResult) return res.cc("密码错误，请重新输入！");
 
-    // TODO:在服务器端生成 Token 的字符串
+    // 在服务器端生成 Token 的字符串
     const user = { ...results[0], password: "", user_pic: "" };
 
     //对用户的信息进行加密，生成 token 字符串
@@ -88,11 +90,31 @@ exports.login = (req, res) => {
       expiresIn: config.expiresIn,
     });
 
-    //调用 res.send() 将 Token 响应给前端
-    res.send({
-      status: 0,
-      message: "登录成功",
-      token: "Bearer " + tokenStr,
+    db.query(menusql, (err, results) => {
+      //执行 SQL 失败
+      if (err) return res.cc(err);
+
+      //执行 SQL 成功，但是获取到的数据条数不等于1
+      if (results.length == 0) return res.cc("获取菜单失败！");
+
+      // 递归将扁平化数组转成树形数组
+      function nest(pid, arr) {
+        return arr
+          .filter((item) => item.pid === pid)
+          .map((item) => ({ ...item, children: nest(item.id, arr) }));
+      }
+      console.log(nest("0", results));
+
+      res.send({
+        status: 0,
+        message: "登录成功！",
+        token: "Bearer " + tokenStr,
+        menus: nest(0, results),
+      });
     });
+
+    //调用 res.send() 将 Token 响应给前端
   });
 };
+
+

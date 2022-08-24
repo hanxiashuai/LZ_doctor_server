@@ -1,6 +1,8 @@
 // 导入 express
 const express = require("express");
 
+//导入上传文件的中间件
+const upload = require("../utils/upload");
 // 创建路由对象
 const router = express.Router();
 
@@ -19,7 +21,6 @@ const expressJoi = require("@escook/express-joi");
 const {
   update_userinfo_schema,
   update_password_schema,
-  update_avatar_schema,
 } = require("../schema/user");
 
 // 获取用户的基本信息
@@ -29,10 +30,10 @@ router.get("/userinfo", getUserInfo);
 router.post("/userinfo", expressJoi(update_userinfo_schema), updateUserInfo);
 
 //更新密码的路由
-router.post("/updatepwd", expressJoi(update_password_schema), updatePassword);
+router.put("/updatepwd", expressJoi(update_password_schema), updatePassword);
 
 // 更新用户头像的路由
-router.post("/update/avatar", expressJoi(update_avatar_schema), updateAvatar);
+router.post("/update/avatar", upload.single("avatar"), updateAvatar);
 
 // 向外共享路由对象
 module.exports = router;
