@@ -1,8 +1,6 @@
-const path = require("path");
-
 //导入 express
 const express = require("express");
-
+const path = require("path");
 //创建服务器的实例对象
 const app = express();
 
@@ -32,7 +30,8 @@ app.use((req, res, next) => {
   };
   next();
 });
-
+// 处理静态资源
+app.use(express.static(path.join(__dirname, "images")));
 //一定要在路由之前配置解析 Token 的中间件
 const config = require("./config");
 
@@ -43,10 +42,27 @@ const expressJWT = require("express-jwt");
 app.use(
   expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] })
 );
-
 //导入并使用用户路由模块
 const userRouter = require("./router/user");
 app.use("/api", userRouter);
+//导入并使用groups信息模块
+const groupsRouter = require("./router/groups");
+app.use("/api",groupsRouter)
+//导入并使用menu信息模块
+const menuRouter = require("./router/menu");
+app.use("/api",menuRouter)
+//导入并使用lbt信息模块
+const lbtRouter = require("./router/lbt");
+app.use("/api",lbtRouter)
+//导入并使用doctor信息模块
+const doctorRouter = require("./router/doctor");
+app.use("/api",doctorRouter)
+//导入并使用cooperation信息模块
+const cooperationRouter = require("./router/cooperation");
+app.use("/api",cooperationRouter)
+//导入并使用cooperation信息模块
+const dynamicRouter = require("./router/dynamic");
+app.use("/api",dynamicRouter)
 
 // 导入并使用用户信息路由模块
 const userinfoRouter = require("./router/userinfo");
@@ -68,6 +84,7 @@ app.use((err, req, res, next) => {
   console.log(err);
   res.cc(err);
 });
+
 
 //启动服务器
 app.listen(3007, () => {

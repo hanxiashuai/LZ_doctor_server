@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config");
 //微信登录的处理函数
 exports.wxlogin = (req, res) => {
-  console.log(req.query);
+  console.log('11111',req.query);
   let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${config.WX_APPID}&secret=${config.WX_APPSECRET}&js_code=${req.query.code}&grant_type=authorization_code`;
 
   //向微信服务器发送请求
@@ -23,7 +23,7 @@ exports.wxlogin = (req, res) => {
     });
 
     response.on("end", () => {
-      console.log(JSON.parse(data));
+      console.log('3333',JSON.parse(data));
       // openid:微信用户的唯一标识
       // session_key
       const { openid, session_key } = JSON.parse(data);
@@ -46,7 +46,7 @@ exports.wxlogin = (req, res) => {
             message: "微信授权登录成功",
             token: "Bearer " + tokenStr,
           });
-          
+
         //定义插入新用户的 sql 语句
         const sql = "insert into wx_users set ?";
 
