@@ -11,7 +11,7 @@ const config = require("../config");
 
 //微信登录的处理函数
 exports.wxlogin = (req, res) => {
-  console.log('11111',req.query);
+  console.log('11111',req.user);
   let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${config.WX_APPID}&secret=${config.WX_APPSECRET}&js_code=${req.query.code}&grant_type=authorization_code`;
 
   //向微信服务器发送请求

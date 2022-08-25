@@ -2,7 +2,7 @@
 const db = require("../db/index");
 exports.lognav = (req, res) => {
   //定义分类查询的sql语句
-  const sql = "select * from nav;";
+  const sql = "select * from `nav`";
   //定义
   db.query(sql, (err, result) => {
     if (err) return res.cc(err);

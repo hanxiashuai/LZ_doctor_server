@@ -8,7 +8,6 @@ const bcrypt = require("bcryptjs");
 exports.getUserInfo = (req, res) => {
   // 根据用户的 id，查询用户的基本信息
   const sql = `select id, username, nickname, email, user_pic from ev_users where id=?`;
-  // console.log(req.user);
   // 注意：req 对象上的 user 属性，是 Token 解析成功，express-jwt 中间件帮我们挂载上去的
   db.query(sql, req.user.id, (err, results) => {
     // 1. 执行 SQL 语句失败

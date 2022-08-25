@@ -92,6 +92,10 @@ app.use("/api",router.dynamicRouter)
 
 
 
+//导入并使用 nav 信息模块
+
+app.use("/api",router.navRouter)
+
 
 
 //定义错误级别的中间件
