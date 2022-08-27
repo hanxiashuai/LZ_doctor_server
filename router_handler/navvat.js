@@ -1,5 +1,6 @@
 //数据库到模块
 const db = require("../db/index");
+
 exports.lognav = (req, res) => {
   //定义分类查询的sql语句
   const sql = "select * from nav;";
@@ -102,6 +103,20 @@ exports.article = (req, res) => {
     res.status(200).send({
       status: 0,
       message: "文章获取成功",
+      data: result,
+    });
+  });
+};
+//获取全部文章
+exports.allarticle = (req, res) => {
+  //定义分类查询的sql语句
+  const sql = "select * from `table`";
+  //定义
+  db.query(sql, (err, result) => {
+    if (err) return res.cc(err);
+    res.send({
+      status: 0,
+      message: "成功",
       data: result,
     });
   });

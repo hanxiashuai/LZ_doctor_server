@@ -6,7 +6,6 @@ exports.getDynamic = (req, res) => {
             // console.log("@@@",req.query);
             const sql = 'SELECT * FROM `dynamic` where  id = ?';
             db.query(sql, [req.query.id], function (error, results, fields) {
-                console.log("@@@：", results);
                 if (error) throw error;
                 res.send({
                     code: 1,

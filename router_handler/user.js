@@ -110,6 +110,7 @@ exports.login = (req, res) => {
         message: "登录成功！",
         token: "Bearer " + tokenStr,
         menus: nest(0, results),
+        data:user
       });
     });
 

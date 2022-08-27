@@ -86,13 +86,19 @@ app.use("/api",router.doctorRouter)
 
 app.use("/api",router.cooperationRouter)
 
-//导入并使用cooperation信息模块
+//导入并使用dynamic信息模块
 
 app.use("/api",router.dynamicRouter)
 
+//导入并使用prescription信息模块
 
+app.use("/api",router.prescriptionRouter)
 
+//导入并使用groupData信息模块
 
+app.use("/api",router.groupDataRouter)
+
+app.use('/api',router.navRouter)
 
 //定义错误级别的中间件
 app.use((err, req, res, next) => {

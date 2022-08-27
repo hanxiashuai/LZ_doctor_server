@@ -1,7 +1,7 @@
 // 导入数据库操作模块
 const db = require("../db/index");
 // 获取集团基本信息的函数
-exports.getGroups = async (req, res) => {
+exports.getGroups = (req, res) => {
   try {
     const sql = 'SELECT * FROM `groups`';
     db.query(sql, function (error, results, fields) {
@@ -17,7 +17,7 @@ exports.getGroups = async (req, res) => {
   }
 };
 // 添加一条集团基本信息的函数
-exports.addGroup = async (req, res) => {
+exports.addGroup =  (req, res) => {
   try {
     const {groupName} = req.body
     const sql = 'insert into `groups` (groupName) values (?)' ;
@@ -33,11 +33,10 @@ exports.addGroup = async (req, res) => {
   }
 };
 // 修改一条集团基本信息的函数
-exports.updateGroup = async (req, res) => {
+exports.updateGroup =  (req, res) => {
   try {
     const {id,groupName} = req.body
     const sql = 'update `groups` set groupName=? where id=?' ;
-    
     db.query(sql, [groupName,id],function (error, results, fields) {
       if (error) throw error;
       res.status(200).send({
@@ -49,7 +48,7 @@ exports.updateGroup = async (req, res) => {
   }
 };
 // 删除一条集团基本信息的函数
-exports.delGroup = async (req, res) => {
+exports.delGroup =  (req, res) => {
   try {
     const {id} = req.body
     const sql = 'delete from `groups` where id =?' ;
