@@ -5,7 +5,7 @@ module.exports = {
   jwtSecretKey: "wsyzxxy (*^_^*)",
 
   //token 的有效期
-  expiresIn: "8h",
+  expiresIn: "10h",
 
   //微信小程序的配置
   WX_APPID: "wx1c470017f9833efd",

@@ -88,6 +88,7 @@ exports.login = (req, res) => {
     //对用户的信息进行加密，生成 token 字符串
     const tokenStr = jwt.sign(user, config.jwtSecretKey, {
       expiresIn: config.expiresIn,
+      algorithm: "HS256",
     });
 
     db.query(menusql, (err, results) => {
@@ -110,11 +111,10 @@ exports.login = (req, res) => {
         message: "登录成功！",
         token: "Bearer " + tokenStr,
         menus: nest(0, results),
+        data:user
       });
     });
 
     //调用 res.send() 将 Token 响应给前端
   });
 };
-
-

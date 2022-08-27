@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 
 // 获取用户基本信息的函数
 exports.getUserInfo = (req, res) => {
+  console.log(req.user);
   // 根据用户的 id，查询用户的基本信息
   const sql = `select id, username, nickname, email, user_pic from ev_users where id=?`;
   // 注意：req 对象上的 user 属性，是 Token 解析成功，express-jwt 中间件帮我们挂载上去的

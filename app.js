@@ -3,14 +3,14 @@ const express = require("express");
 const path = require("path");
 
 //导入路由对象
-const router = require("./router/index")
+const router = require("./router/index");
 
 //创建服务器的实例对象
 const app = express();
 
 const joi = require("@hapi/joi");
 
-//导入并配置 cors 中间件
+//导入并配置 cors 中间件 解决跨域
 const cors = require("cors");
 app.use(cors());
 
@@ -46,57 +46,54 @@ const config = require("./config");
 // 解析 token 的中间件
 const expressJWT = require("express-jwt");
 
+//只要配置express-jwt这个中间件，就可以把解析出来的信息挂载在req.user上
 // 使用 .unless({ path: [/^\/api\//] }) 指定哪些接口不需要进行 Token 的身份认证
 app.use(
   expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] })
 );
 
 //导入并使用用户路由模块
-
 app.use("/api", router.userRouter);
 
 //导入并使用微信用户路由模块
-
 app.use("/api", router.wxuserRouter);
 
 // 导入并使用用户信息路由模块
-
 // 注意：以 /my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
-app.use("/my",router. userinfoRouter);
+app.use("/my", router.userinfoRouter);
 
+// 导入并使用用户地址路由模块
+app.use("/my", router.user_address);
 
+// 导入并使用微信用户基本信息路由模块
+app.use("/my", router.wx_userinfoRouter);
 
 //导入并使用groups信息模块
-
-app.use("/api",router.groupsRouter)
+app.use("/api", router.groupsRouter);
 
 //导入并使用menu信息模块
 
-app.use("/api",router.menuRouter)
+app.use("/api", router.menuRouter);
 
 //导入并使用lbt信息模块
 
-app.use("/api",router.lbtRouter)
+app.use("/api", router.lbtRouter);
 
 //导入并使用doctor信息模块
 
-app.use("/api",router.doctorRouter)
+app.use("/api", router.doctorRouter);
 
 //导入并使用cooperation信息模块
 
-app.use("/api",router.cooperationRouter)
+app.use("/api", router.cooperationRouter);
 
 //导入并使用cooperation信息模块
 
-app.use("/api",router.dynamicRouter)
-
-
+app.use("/api", router.dynamicRouter);
 
 //导入并使用 nav 信息模块
 
-app.use("/api",router.navRouter)
-
-
+app.use("/api", router.navRouter);
 
 //定义错误级别的中间件
 app.use((err, req, res, next) => {
@@ -108,7 +105,6 @@ app.use((err, req, res, next) => {
   console.log(err);
   res.cc(err);
 });
-
 
 //启动服务器
 app.listen(3007, () => {
