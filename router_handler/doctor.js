@@ -38,3 +38,16 @@ exports.getDoctors = (req, res) => {
     }
 
 }
+exports.getDoct = (req, res) => {
+    //定义分类查询的sql语句
+    const sql = " SELECT * FROM  `doctor` where groupId = ?";
+    //定义
+    db.query(sql, req.query.groupId , (err, result) => {
+      if (err) return res.cc(err);
+      res.send({
+        status: 0,
+        message: "成功",
+        data: result,
+      });
+    });
+  };

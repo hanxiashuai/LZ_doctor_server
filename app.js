@@ -51,6 +51,9 @@ const expressJWT = require("express-jwt");
 app.use(
   expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] })
 );
+//导入文章内容的路由模块
+const artcat = require("./router/nav");
+app.use("/api", artcat);
 
 //导入并使用用户路由模块
 app.use("/api", router.userRouter);
@@ -94,7 +97,6 @@ app.use("/api", router.dynamicRouter);
 //导入并使用 nav 信息模块
 
 app.use("/api", router.navRouter);
-
 //定义错误级别的中间件
 app.use((err, req, res, next) => {
   //验证失败导致的错误
