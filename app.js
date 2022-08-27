@@ -10,7 +10,7 @@ const app = express();
 
 const joi = require("@hapi/joi");
 
-//导入并配置 cors 中间件
+//导入并配置 cors 中间件 解决跨域问题
 const cors = require("cors");
 app.use(cors());
 
@@ -50,6 +50,9 @@ const expressJWT = require("express-jwt");
 app.use(
   expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] })
 );
+//导入文章内容的路由模块
+const artcat=require('./router/nav')
+app.use('/api',artcat)
 
 //导入并使用用户路由模块
 

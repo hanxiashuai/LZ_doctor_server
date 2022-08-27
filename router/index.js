@@ -7,3 +7,4 @@ exports.lbtRouter = require("./lbt");
 exports.doctorRouter = require("./doctor");
 exports.cooperationRouter = require("./cooperation");
 exports.dynamicRouter = require("./dynamic");
+exports.navRouter = require("./nav");

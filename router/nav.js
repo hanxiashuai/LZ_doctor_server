@@ -9,7 +9,8 @@ const {
   table,
   delectinterface,
   Modifyarticle,
-  article
+  article,
+  allarticle
 } = require("../router_handler/navvat");
 router.get("/nav", lognav).post("/ipload", upload.array("avatar", 12), load);
 router.post("/table", table);
@@ -19,5 +20,6 @@ router.delete("/delectinterface", delectinterface);
 router.post("/Modifyarticle", Modifyarticle);
 //获取文章内容
 router.get("/article", article);
+router.get('/allarticle',allarticle)
 
 module.exports = router;
