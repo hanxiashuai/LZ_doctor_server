@@ -25,4 +25,6 @@ router.post("/Modifyarticle", Modifyarticle);
 router.get("/article", article);
 router.get('/allarticle',allarticle)
 
+router.get('/allarticle',allarticle)
+
 module.exports = router;
