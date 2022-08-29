@@ -12,3 +12,5 @@ exports.user_address=require("./user_address")
 exports.wx_userinfoRouter=require("./wx_userinfo")
 exports.prescriptionRouter = require("./prescription");
 exports.groupDataRouter = require("./medicalGroup");
+exports.getwxusersRouter = require("./admin_users");
+exports.mydoctorRouter = require("./my_doctor");

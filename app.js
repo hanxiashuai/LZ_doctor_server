@@ -31,7 +31,7 @@ app.use((req, res, next) => {
   res.cc = function (err, status = 1) {
     res.send({
       status,
-      message: err instanceof Error ? err.message : err,
+      msg: err instanceof Error ? err.message : err,
     });
   };
   next();
@@ -70,6 +70,12 @@ app.use("/my", router.user_address);
 
 // 导入并使用微信用户基本信息路由模块
 app.use("/my", router.wx_userinfoRouter);
+
+// 导入并使用获取所有微信用户的路由模块
+app.use("/my", router.getwxusersRouter);
+
+// 导入并使用我的医生路由模块
+app.use("/my", router.mydoctorRouter);
 
 //导入并使用groups信息模块
 app.use("/api", router.groupsRouter);

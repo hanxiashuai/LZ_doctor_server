@@ -108,7 +108,7 @@ exports.login = (req, res) => {
 
       res.send({
         status: 0,
-        message: "登录成功！",
+        msg: "登录成功！",
         token: "Bearer " + tokenStr,
         menus: nest(0, results),
         data:user

@@ -48,7 +48,7 @@ exports.getAnAddress = (req, res) => {
 
 
 //删除用户地址的接口
-exports.delUserAddress = async (req, res) => {
+exports.delUserAddress = (req, res) => {
   console.log(req.user);
   const sqlStr = "delete from `user_address` where id= ?";
   //地址的id
